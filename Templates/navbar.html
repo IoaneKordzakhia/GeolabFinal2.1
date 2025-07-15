@@ -1,0 +1,31 @@
+<!-- templates/navbar.html -->
+<nav class="navbar">
+  <div class="logo"><a href="{{ url_for('index') }}">Store</a></div>
+
+  <ul class="nav-links">
+    <li><a href="{{ url_for('index') }}">Home</a></li>
+    <li><a href="{{ url_for('cart') }}">Cart</a></li>
+    <li><a href="{{ url_for('about') }}">About</a></li>
+
+    {% if not session.get('user') %}
+    <li>
+      <a href="{{ url_for('login') }}">Login</a> /
+      <a href="{{ url_for('signup') }}">Signup</a>
+    </li>
+    {% else %}
+    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    {% endif %}
+  </ul>
+
+  <form action="{{ url_for('search') }}" method="GET" class="search-form">
+    <input type="text" name="query" placeholder="Search products..." />
+    <button type="submit">Search</button>
+  </form>
+</nav>
+<a href="https://www.tbceducation.ge/" target="_blank" rel="noopener">
+  <img
+    src="static/images/TBC LOGO.png"
+    alt="TBC Logo"
+    style="height: 80px; background: white"
+  />
+</a>

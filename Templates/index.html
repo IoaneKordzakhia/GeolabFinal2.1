@@ -1,0 +1,48 @@
+<!-- templates/index.html -->
+{% extends 'base.html' %} {% block title %}Home - My Online Store{% endblock %}
+{% block content %}
+<h1>Welcome to Our Store</h1>
+
+<div class="product-grid">
+  {% for product in products %}
+  <div class="product-card fade-in">
+    <a href="{{ url_for('product_detail', product_id=product.id) }}">
+      <img src="{{ product.image_url }}" alt="{{ product.name }}" />
+      <h2>{{ product.name }}</h2>
+      <p>${{ product.price }}</p>
+    </a>
+    <form
+      action="{{ url_for('add_to_cart', product_id=product.id) }}"
+      method="POST"
+    >
+      <button type="submit">Add to Cart</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- ✨ Animation Script Only -->
+<script>
+  const faders = document.querySelectorAll(".fade-in");
+  const appearOptions = {
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px",
+  };
+  const appearOnScroll = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("appear");
+      observer.unobserve(entry.target);
+    });
+  }, appearOptions);
+  faders.forEach((fader) => appearOnScroll.observe(fader));
+</script>
+{% endblock %}
+<footer>
+  <p>&copy; 2025 შენი კომპანია. ყველა უფლება დაცულია.</p>
+  <div class="social-icons">
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-linkedin"></i></a>
+  </div>
+</footer>

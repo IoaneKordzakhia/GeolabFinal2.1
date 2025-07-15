@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}My Online Store{% endblock %}</title>
+
+    <!-- 🌓 Dark Mode Preload Script -->
+    <script>
+      if (localStorage.getItem("theme") === "dark") {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <!-- 🌓 Dark Mode Toggle Script -->
+    <script>
+      const toggle = document.getElementById("darkModeToggle");
+      const html = document.documentElement;
+
+      if (localStorage.getItem("theme") === "dark") {
+        html.classList.add("dark");
+        if (toggle) toggle.checked = true;
+      }
+
+      if (toggle) {
+        toggle.addEventListener("change", () => {
+          if (toggle.checked) {
+            html.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+          } else {
+            html.classList.remove("dark");
+            localStorage.setItem("theme", "light");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
+<footer>
+  <p>&copy; 2025 შენი კომპანია. ყველა უფლება დაცულია.</p>
+  <div class="social-icons">
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-linkedin"></i></a>
+  </div>
+</footer>
