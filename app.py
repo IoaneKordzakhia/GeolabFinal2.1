@@ -1,6 +1,8 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, session
 
-app = Flask(__name__)
+template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+app = Flask(__name__, template_folder=template_dir)
 app.secret_key = 'supersecretkey'
 
 # Dummy product data
@@ -19,7 +21,7 @@ def index():
 @app.route('/products')
 def product_list():
     return render_template('product.html', products=products)
- 
+
 # Product Detail Page
 @app.route('/product/<int:product_id>')
 def product_detail(product_id):
@@ -33,7 +35,7 @@ def about():
 
 # Cart Page
 @app.route('/cart')
-def cart(): 
+def cart():
     cart_items = session.get('cart', [])
     total = sum(item['price'] * item['quantity'] for item in cart_items)
     for item in cart_items:
@@ -112,4 +114,4 @@ def logout():
 
 # Run the app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
