@@ -1,16 +1,135 @@
-<!-- templates/index.html -->
 {% extends 'base.html' %} {% block title %}Home - My Online Store{% endblock %}
 {% block content %}
-<h1>Welcome to Our Store</h1>
+
+<h1 class="text-center mb-4" style="color: #0ea5e9; font-weight: 700">
+  Welcome to Our Store
+</h1>
+
+<style>
+  /* Grid container */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    justify-items: center;
+    margin-bottom: 40px;
+  }
+
+  /* Product card */
+  .product-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .product-card.appear {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Product image */
+  .product-card img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 0 auto 18px auto;
+  }
+
+  /* Product title */
+  .product-card h2 {
+    font-size: 1.3rem;
+    color: #0ea5e9;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+
+  /* Price */
+  .product-card p.price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #007bff;
+    margin-bottom: 18px;
+  }
+
+  /* Add to cart button */
+  .product-card form button {
+    background-color: #0ea5e9;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 30px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: auto;
+  }
+  .product-card form button:hover {
+    background-color: #0284c7;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 768px) {
+    .product-grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+    .product-card {
+      max-width: 260px;
+      min-height: 400px;
+    }
+    .product-card img {
+      width: 140px;
+      height: 140px;
+      margin-bottom: 15px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .product-card {
+      max-width: 100%;
+      min-height: 380px;
+      padding: 15px;
+    }
+    .product-card img {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 12px;
+    }
+  }
+</style>
 
 <div class="product-grid">
   {% for product in products %}
   <div class="product-card fade-in">
-    <a href="{{ url_for('product_detail', product_id=product.id) }}">
+    <a
+      href="{{ url_for('product_detail', product_id=product.id) }}"
+      style="text-decoration: none"
+    >
       <img src="{{ product.image_url }}" alt="{{ product.name }}" />
       <h2>{{ product.name }}</h2>
-      <p>${{ product.price }}</p>
     </a>
+    <p class="price">${{ "%.2f"|format(product.price) }}</p>
     <form
       action="{{ url_for('add_to_cart', product_id=product.id) }}"
       method="POST"
@@ -21,13 +140,9 @@
   {% endfor %}
 </div>
 
-<!-- ✨ Animation Script Only -->
 <script>
   const faders = document.querySelectorAll(".fade-in");
-  const appearOptions = {
-    threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px",
-  };
+  const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
   const appearOnScroll = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
@@ -37,12 +152,5 @@
   }, appearOptions);
   faders.forEach((fader) => appearOnScroll.observe(fader));
 </script>
+
 {% endblock %}
-<footer>
-  <p>&copy; 2025 შენი კომპანია. ყველა უფლება დაცულია.</p>
-  <div class="social-icons">
-    <a href="#"><i class="fab fa-facebook"></i></a>
-    <a href="#"><i class="fab fa-instagram"></i></a>
-    <a href="#"><i class="fab fa-linkedin"></i></a>
-  </div>
-</footer>

@@ -1,25 +1,101 @@
-<!-- templates/signup.html -->
 {% extends 'base.html' %} {% block title %}Sign Up{% endblock %} {% block
 content %}
-<h1>Create an Account</h1>
-<form method="POST" action="{{ url_for('signup') }}">
-  <label>Name:</label>
-  <input type="text" name="name" required />
 
-  <label>Email:</label>
-  <input type="email" name="email" required />
+<style>
+  .auth-container {
+    max-width: 400px;
+    margin: 60px auto 80px auto;
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .auth-container h1 {
+    text-align: center;
+    color: #0ea5e9;
+    margin-bottom: 24px;
+    font-weight: 700;
+  }
+  form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+  }
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 20px;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  form input[type="text"]:focus,
+  form input[type="email"]:focus,
+  form input[type="password"]:focus {
+    border-color: #0ea5e9;
+    outline: none;
+  }
+  form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0ea5e9;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  form button:hover {
+    background-color: #0284c7;
+  }
+  /* Footer inside auth page */
+  footer {
+    margin-top: 40px;
+    text-align: center;
+    color: #777;
+    font-size: 0.9rem;
+  }
+  .social-icons a {
+    margin: 0 8px;
+    color: #0ea5e9;
+    font-size: 1.4rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .social-icons a:hover {
+    color: #0284c7;
+  }
+</style>
 
-  <label>Password:</label>
-  <input type="password" name="password" required />
+<div class="auth-container">
+  <h1>Create an Account</h1>
+  <form method="POST" action="{{ url_for('signup') }}">
+    <label for="name">Name:</label>
+    <input id="name" type="text" name="name" required />
 
-  <button type="submit">Sign Up</button>
-</form>
+    <label for="email">Email:</label>
+    <input id="email" type="email" name="email" required />
+
+    <label for="password">Password:</label>
+    <input id="password" type="password" name="password" required />
+
+    <button type="submit">Sign Up</button>
+  </form>
+  <footer>
+    <p>&copy; 2025 შენი კომპანია. ყველა უფლება დაცულია.</p>
+    <div class="social-icons">
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+    </div>
+  </footer>
+</div>
+
 {% endblock %}
-<footer>
-  <p>&copy; 2025 შენი კომპანია. ყველა უფლება დაცულია.</p>
-  <div class="social-icons">
-    <a href="#"><i class="fab fa-facebook"></i></a>
-    <a href="#"><i class="fab fa-instagram"></i></a>
-    <a href="#"><i class="fab fa-linkedin"></i></a>
-  </div>
-</footer>

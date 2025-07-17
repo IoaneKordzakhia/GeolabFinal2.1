@@ -1,17 +1,121 @@
 <!-- templates/about.html -->
-{% extends 'base.html' %} {% block title %}About Us{% endblock %} {% block
-content %}
-<h1>About Us</h1>
-<p>
-  We are a small business offering high-quality products at affordable prices.
-  Our mission is to provide great service and modern style to all our customers.
-</p>
-{% endblock %}
+{% extends 'base.html' %} {% block title %}About Us - TBC x GeoLab{% endblock %}
+{% block content %}
+
+<style>
+  .about-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #e2e8f0;
+    text-align: center;
+    background-color: #111827;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.1);
+  }
+
+  .about-header {
+    font-size: 2.8rem;
+    color: #0ea5e9;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  .about-description {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    color: #cbd5e1;
+  }
+
+  .about-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+  }
+
+  .resource-links {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .resource-links a {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #0ea5e9;
+    border: 2px solid #0ea5e9;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: 0.3s ease;
+  }
+
+  .resource-links a:hover {
+    background-color: #0ea5e9;
+    color: #0f172a;
+  }
+
+  footer {
+    margin-top: 60px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.9rem;
+  }
+
+  .social-icons a {
+    margin: 0 10px;
+    color: #0ea5e9;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .social-icons a:hover {
+    color: #0284c7;
+  }
+</style>
+
+<div class="about-container">
+  <h1 class="about-header">About TBC x GeoLab</h1>
+  <img
+    src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80"
+    alt="Education Collaboration"
+    class="about-image"
+  />
+  <p class="about-description">
+    This website is a student project created as part of the collaboration
+    between <strong>TBC Bank's Education Initiative</strong> and
+    <strong>GeoLab</strong>. Its goal is to demonstrate modern, accessible web
+    development in an educational context.
+  </p>
+  <p class="about-description">
+    Although this site is not commercially active, it represents the mission of
+    TBC and GeoLab: blending innovation, technology, and creativity to empower
+    learners in Georgia and beyond.
+  </p>
+
+  <div class="resource-links">
+    <a href="https://tbcbank.ge/ka/tbc-education" target="_blank"
+      >TBC Education</a
+    >
+    <a href="https://geolab.edu.ge/en/" target="_blank">Visit GeoLab</a>
+  </div>
+</div>
+
 <footer>
-  <p>&copy; 2025 შენი კომპანია. ყველა უფლება დაცულია.</p>
+  <p>&copy; 2025 TBC x GeoLab. All rights reserved.</p>
   <div class="social-icons">
-    <a href="#"><i class="fab fa-facebook"></i></a>
-    <a href="#"><i class="fab fa-instagram"></i></a>
-    <a href="#"><i class="fab fa-linkedin"></i></a>
+    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
   </div>
 </footer>
+
+{% endblock %}

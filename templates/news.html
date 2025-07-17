@@ -1,0 +1,154 @@
+{% extends "base.html" %} {% block title %}New Products - My Online Store{%
+endblock %} {% block content %}
+
+<style>
+  /* Container for all product cards */
+  .products-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 18px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  /* Individual product card */
+  .product-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Image styling */
+  .product-card img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    margin: 20px auto 15px auto;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #f4f4f4;
+  }
+
+  /* Card content */
+  .product-info {
+    padding: 0 15px 20px;
+    flex-grow: 1;
+  }
+  .product-info h5 {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  .product-info p.description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 12px;
+    min-height: 48px;
+  }
+  .product-info p.price {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #0d6efd;
+    margin-bottom: 15px;
+  }
+
+  /* Buttons */
+  .btn-view {
+    background-color: #0d6efd;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  .btn-view:hover {
+    background-color: #084ecf;
+  }
+
+  /* Section headings */
+  h2.section-title {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: #222;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #0d6efd;
+    display: inline-block;
+    padding-bottom: 6px;
+  }
+
+  /* Sale card specific styles */
+  .product-card.sale {
+    border: 2px solid #dc3545;
+  }
+  .product-info.sale h5 {
+    color: #dc3545;
+  }
+  .product-info.sale p.price del {
+    color: #888;
+    margin-right: 8px;
+  }
+</style>
+
+<h2 class="section-title">New Products</h2>
+<div class="products-container">
+  {% for product in new_products %}
+  <div class="product-card">
+    {% if product.image_url %}
+    <img src="{{ product.image_url }}" alt="{{ product.name }}" />
+    {% else %}
+    <img src="/static/photos/placeholder.png" alt="No image available" />
+    {% endif %}
+    <div class="product-info">
+      <h5>{{ product.name }}</h5>
+      <p class="description">{{ product.description }}</p>
+      <p class="price">${{ "%.2f"|format(product.price) }}</p>
+      <a
+        href="{{ url_for('product_detail', product_id=product.id) }}"
+        class="btn-view"
+        >View Details</a
+      >
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<h2 class="section-title">On Sale</h2>
+<div class="products-container">
+  {% for product in sales_products %}
+  <div class="product-card sale">
+    {% if product.image_url %}
+    <img src="{{ product.image_url }}" alt="{{ product.name }}" />
+    {% else %}
+    <img src="/static/photos/placeholder.png" alt="No image available" />
+    {% endif %}
+    <div class="product-info sale">
+      <h5>{{ product.name }}</h5>
+      <p class="description">{{ product.description }}</p>
+      <p class="price">
+        <del>${{ "%.2f"|format(product.original_price) }}</del>
+        ${{ "%.2f"|format(product.price) }}
+      </p>
+      <a
+        href="{{ url_for('product_detail', product_id=product.id) }}"
+        class="btn-view"
+        style="background: #dc3545"
+        >View Details</a
+      >
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

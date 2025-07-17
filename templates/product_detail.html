@@ -1,26 +1,206 @@
-<!-- templates/product_detail.html -->
 {% extends 'base.html' %} {% block title %}{{ product.name }}{% endblock %} {%
 block content %}
-<div class="product-detail">
-  <img src="{{ product.image_url }}" alt="{{ product.name }}" />
+
+<style>
+  .product-detail-wrapper {
+    max-width: 900px;
+    margin: 3rem auto;
+    display: flex;
+    gap: 2.5rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .product-info {
+    flex: 1 1 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .product-info h1 {
+    color: #0ea5e9;
+    font-weight: 800;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .product-info p.description {
+    font-size: 1.1rem;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .product-info label {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+  }
+
+  select.size-select {
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    border: 1.5px solid #0ea5e9;
+    width: 170px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+  select.size-select:hover,
+  select.size-select:focus {
+    border-color: #0284c7;
+    outline: none;
+  }
+
+  .price {
+    font-weight: 900;
+    font-size: 2.8rem;
+    color: #007bff;
+    margin-bottom: 2.5rem;
+    letter-spacing: 1px;
+  }
+
+  form button.btn-success {
+    padding: 0.9rem 2.2rem;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    background-color: #0ea5e9;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    box-shadow: 0 6px 15px rgba(14, 165, 233, 0.4);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    width: fit-content;
+  }
+  form button.btn-success:hover {
+    background-color: #0284c7;
+    box-shadow: 0 8px 20px rgba(2, 132, 199, 0.6);
+  }
+
+  .back-btn {
+    margin-top: 3rem;
+    padding: 0.7rem 1.6rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    background-color: #777;
+    color: white;
+    display: inline-block;
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease;
+  }
+  .back-btn:hover {
+    background-color: #555;
+  }
+
+  .carousel-container {
+    flex: 1 1 400px;
+    max-width: 400px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Carousel images */
+  #productCarousel .carousel-inner img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 16px;
+    transition: transform 0.3s ease;
+  }
+  #productCarousel .carousel-inner img:hover {
+    transform: scale(1.05);
+  }
+
+  /* Carousel controls */
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    filter: invert(1);
+    background-size: 35px 35px;
+  }
+
+  @media (max-width: 768px) {
+    .product-detail-wrapper {
+      flex-direction: column;
+      max-width: 90vw;
+      padding: 1.5rem;
+    }
+
+    .carousel-container {
+      max-width: 100%;
+      margin-top: 2rem;
+    }
+  }
+</style>
+
+<div class="product-detail-wrapper">
   <div class="product-info">
     <h1>{{ product.name }}</h1>
-    <p>{{ product.description }}</p>
-    <p>Price: ${{ product.price }}</p>
+
+    <p class="description">{{ product.description }}</p>
+
+    <label for="size-select">Select Size:</label>
+    <select id="size-select" name="size" class="size-select" required>
+      <option value="" disabled selected>Select size</option>
+      <option value="S">S</option>
+      <option value="M">M</option>
+      <option value="L">L</option>
+      <option value="XL">XL</option>
+      <option value="XXL">XXL</option>
+    </select>
+
+    <p class="price">Price: ${{ "%.2f"|format(product.price) }}</p>
+
     <form
       action="{{ url_for('add_to_cart', product_id=product.id) }}"
       method="POST"
     >
-      <button type="submit">Add to Cart</button>
+      <button type="submit" class="btn btn-success">Add to Cart</button>
     </form>
+
+    <a href="{{ url_for('index') }}" class="back-btn">← Back to Products</a>
+  </div>
+
+  <div class="carousel-container">
+    <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for img in product.images %}
+        <div class="carousel-item {% if loop.first %}active{% endif %}">
+          <img src="{{ img }}" alt="Image of {{ product.name }}" />
+        </div>
+        {% endfor %}
+      </div>
+
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#productCarousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#productCarousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
   </div>
 </div>
+
 {% endblock %}
-<footer>
-  <p>&copy; 2025 შენი კომპანია. ყველა უფლება დაცულია.</p>
-  <div class="social-icons">
-    <a href="#"><i class="fab fa-facebook"></i></a>
-    <a href="#"><i class="fab fa-instagram"></i></a>
-    <a href="#"><i class="fab fa-linkedin"></i></a>
-  </div>
-</footer>
