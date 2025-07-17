@@ -5,7 +5,6 @@ template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templat
 app = Flask(__name__, template_folder=template_dir)
 app.secret_key = 'supersecretkey'
 
-
 products = [
     {
         'id': 1,
@@ -19,9 +18,9 @@ products = [
         ]
     },
     {
-        'id': 2,  # example using existing product id
+        'id': 2,
         'name': 'Test Product2',
-        'price': 15.99,  # discounted price
+        'price': 15.99,
         'original_price': 2333.45,
         'description': 'On sale now!',
         'image_url': '/static/images/3.jpg',
@@ -83,7 +82,6 @@ products = [
     }
 ]
 
-# New products list
 new_products = [
     {
         'id': 8,
@@ -95,7 +93,6 @@ new_products = [
             '/static/images/23.jpg',
             '/static/images/24.jpg',
             '/static/images/25.jpg',
-        
         ]
     },
     {
@@ -113,12 +110,11 @@ new_products = [
     }
 ]
 
-# Sales products list
 sales_products = [
     {
-        'id': 2,  # example using existing product id
+        'id': 2,
         'name': 'Test Product2',
-        'price': 15,  # discounted price
+        'price': 15,
         'original_price': 45.99,
         'description': 'On sale now!',
         'image_url': '/static/images/30.jpg',
@@ -130,17 +126,14 @@ sales_products = [
     }
 ]
 
-# Home Page
 @app.route('/')
 def index():
     return render_template('index.html', products=products)
 
-# Product List Page
 @app.route('/products')
 def product_list():
     return render_template('product.html', products=products)
 
-# Product Detail Page
 @app.route('/product/<int:product_id>')
 def product_detail(product_id):
     product = next((p for p in products if p['id'] == product_id), None)
@@ -148,17 +141,14 @@ def product_detail(product_id):
         return "Product not found", 404
     return render_template('product_detail.html', product=product)
 
-# News Page (New Products + Sales)
 @app.route('/news')
 def news():
     return render_template('news.html', new_products=new_products, sales_products=sales_products)
 
-# About Page
 @app.route('/about')
 def about():
     return render_template('about.html')
 
-# Cart Page
 @app.route('/cart')
 def cart():
     cart_items = session.get('cart', [])
@@ -167,7 +157,6 @@ def cart():
     grand_total = round(sum(item['total'] for item in cart_items), 2)
     return render_template('cart.html', cart_items=cart_items, grand_total=grand_total)
 
-# Add to Cart (only if logged in)
 @app.route('/add_to_cart/<int:product_id>', methods=['POST'])
 def add_to_cart(product_id):
     if 'user' not in session:
@@ -190,7 +179,6 @@ def add_to_cart(product_id):
     flash(f'Added {product["name"]} to cart.')
     return redirect(url_for('cart'))
 
-# Remove from Cart
 @app.route('/remove_from_cart/<int:product_id>', methods=['POST'])
 def remove_from_cart(product_id):
     cart = session.get('cart', [])
@@ -199,39 +187,20 @@ def remove_from_cart(product_id):
     flash('Item removed from cart.')
     return redirect(url_for('cart'))
 
-# Checkout Page (updated for smooth redirect + flash message)
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     if request.method == 'POST':
-        name = request.form.get('name')
-        email = request.form.get('email')
-        address = request.form.get('address')
-        card_number = request.form.get('card_number')
-        exp_date = request.form.get('exp_date')
-        cvc = request.form.get('cvc')
-
-        # NOTE: No strict format validation here, so form submits smoothly.
-
-        # Clear cart on checkout
         session.pop('cart', None)
-
-        # Flash success message on main page
         flash("Successfully checked out! Thank you for your purchase.")
-
-        # Redirect user back to home page ("/")
         return redirect(url_for('index'))
-
-    # GET request - show checkout page
     return render_template('checkout.html')
 
-# Search Page
 @app.route('/search')
 def search():
     query = request.args.get('query', '')
     results = [p for p in products if query.lower() in p['name'].lower()]
     return render_template('search_results.html', results=results, query=query)
 
-# Login Page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -241,22 +210,32 @@ def login():
         return redirect(url_for('index'))
     return render_template('login.html')
 
-# Signup Page
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        # you could add real signup logic here
         flash('Signup successful! Please log in.')
         return redirect(url_for('login'))
     return render_template('signup.html')
 
-# Logout
 @app.route('/logout')
 def logout():
     session.pop('user', None)
     flash('You have been logged out.')
     return redirect(url_for('index'))
 
-# Run app
+@app.route('/services')
+def services():
+    return render_template('services.html')
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        message = request.form.get('message')
+        flash('შეტყობინება წარმატებით გაიგზავნა! მადლობთ.')
+        return redirect(url_for('contact'))
+    return render_template('contact.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
